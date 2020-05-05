@@ -8,7 +8,6 @@ class Settings {
         this.setSaveButtons();
         this.setOptionButtons();
         this.initializeRefresh();
-        this.generateTooltips();
         this.setAutoSaveInterval();
         this.setMenuButtons();
         this.setOtterOptions();
@@ -743,20 +742,5 @@ class Settings {
                 }
             }
         }
-    }
-
-    generateTooltips() {
-        addText('#mkFood', 'Gather up something to eat!<hr/><i>+<span id="e">'+game.resources.getIntensity('food').toString()+'</span> food</i>')
-        addText('#mkWood', 'Scrounge up some wood!<hr/><i>+<span id="e">'+game.resources.getIntensity('wood').toString()+'</span> wood</i>')
-        addText('#mkStone', 'Dig around for some stones!<hr/><i>+<span id="e">'+game.resources.getIntensity('stone').toString()+'</span> stone</i>')
-        addText('#mkJoy', 'Play for a bit to generate more joy!<hr/><i>Temporary x<span id="e">2</span> joy/sec</i>')
-        if(game.buffs.activeBuffs.map(x => x[0]).includes('playBuff')) {
-            $( '#mkJoy #e' ).html(game.resources.resources['joy']['g_mult']);
-        }
-        else {
-            $( '#mkJoy #e' ).html(game.resources.resources['joy']['g_mult']+game.buffs.buffs['playBuff']['modify']['resources']['joy']['g_mult'][1]);
-        }
-        addText(".joyPPS", 'Modifiers:<hr/><div id="e"></div>')
-        addText("#popRes", 'Probability of new <br/>otter per second:<br/><span class="joyOdds" id="e"></span><br/><i>(affected by joy)</i>')
     }
 }

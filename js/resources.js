@@ -6,6 +6,7 @@ class Res {
     init() {
         this.resources = {
             'food': {
+                'description': 'Gather up something to eat!<hr/><i>+<span id="e">1</span> food</i>',
                 'v': 0.0,
                 'm': 0.0,
                 'g': 0,
@@ -15,6 +16,7 @@ class Res {
                 't': 'gather shrimp'
             },
             'wood': {
+                'description': 'Scrounge up some wood!<hr/><i>+<span id="e">1</span> wood</i>',
                 'v': 0.0,
                 'm': 0,
                 'g': 0.0,
@@ -24,6 +26,7 @@ class Res {
                 't': 'collect twigs'
             },
             'stone': {
+                'description': 'Dig around for some stones!<hr/><i>+<span id="e">1</span> stone</i>',
                 'v': 0.0,
                 'm': 0.0,
                 'g': 0.0,
@@ -33,6 +36,7 @@ class Res {
                 't': 'collect pebbles'
             },
             'joy': {
+                'description': 'Play for a bit to generate more joy!<hr/><i>Temporary x<span id="e">2</span> joy/sec</i>',
                 'v': 0,
                 'm': 5.0,
                 'i': 1000000000,
@@ -40,6 +44,7 @@ class Res {
                 'g': .1,
                 'g_mult_jobs': 1,
                 'g_mult': 1,
+                'g_mult_i': 1,
                 't': 'play'
             },
             'pop': {
@@ -202,6 +207,34 @@ class Res {
     }
 
     drawTooltipStem() {
-        //
+        for(var res of Object.keys(this.resources)) {
+            if(res == 'joy') {
+                addText('#mk' + toTitleCase(res), this.resources[res]['description'])
+                if(game != null) {
+                    var mult = game.buffs.buffs['playBuff']['modify']['resources']['joy']['g_mult'][1];
+                    if(game.upgrades.upgrades['partytime'].completed) mult += 0.05 * this.resources.pop.v
+                    $('#mk' + toTitleCase(res) + ' #e').html(mult);
+                }
+            } else if (res == 'pop') {
+
+            } else {
+                addText('#mk' + toTitleCase(res), this.resources[res]['description'])
+                $('#mk' + toTitleCase(res) + ' #e').html(this.resources[res]['i'])
+            }
+        }
+        // addText('#mkFood', 'Gather up something to eat!<hr/><i>+<span id="e">'+this.getIntensity('food').toString()+'</span> food</i>')
+        // addText('#mkWood', 'Scrounge up some wood!<hr/><i>+<span id="e">'+this.getIntensity('wood').toString()+'</span> wood</i>')
+        // addText('#mkStone', 'Dig around for some stones!<hr/><i>+<span id="e">'+this.getIntensity('stone').toString()+'</span> stone</i>')
+        // addText('#mkJoy', 'Play for a bit to generate more joy!<hr/><i>Temporary x<span id="e">2</span> joy/sec</i>')
+        // if(game != null) {
+        //     if(game.buffs.activeBuffs.map(x => x[0]).includes('playBuff')) {
+        //         $( '#mkJoy #e' ).html(this.resources['joy']['g_mult']);
+        //     }
+        //     else {
+        //         $( '#mkJoy #e' ).html(this.resources['joy']['g_mult']+game.buffs.buffs['playBuff']['modify']['resources']['joy']['g_mult'][1]);
+        //     }
+        // }
+        addText(".joyPPS", 'Modifiers:<hr/><div id="e"></div>')
+        addText("#popRes", 'Probability of new <br/>otter per second:<br/><span class="joyOdds" id="e"></span><br/><i>(affected by joy)</i>')
     }
 }

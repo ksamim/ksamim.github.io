@@ -17,7 +17,7 @@ class Buffs {
                 , 'modify': {
                     'resources': {
                         'joy': {
-                            'g_mult': ['add', 1]
+                            'g_mult': ['multiply', 2]
                         }
                     }
                 }, 'stackable': false
@@ -263,7 +263,9 @@ class Buffs {
     drawBuffTooltip(id, name) { 
         addText('#' + id, this.buffs[name]['description']+'<hr/><i id="etext">'+this.buffs[name]['effect']+'</i>');
         if(name == 'playBuff') {
-            $( '#'+toTitleCase(id)+' #e' ).html(game.resources.resources['joy']['g_mult']);
+            var mult = this.buffs['playBuff']['modify']['resources']['joy']['g_mult'][1];
+            if(game.upgrades.upgrades['partytime'].completed) mult += 0.05 * game.resources.resources.pop.v
+            $( '#'+toTitleCase(id)+' #e' ).html(mult);
         }
     }
 }

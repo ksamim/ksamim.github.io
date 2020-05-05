@@ -86,10 +86,9 @@ class OtterGame {
             this.rebuildAllModifications();
             this.upgrades.populateUpgradeTab();
             this.settings.updateNames();
-            this.settings.generateTooltips();
-            this.buildings.drawBuildingTooltips(this.buildings.getVisibleBuildings());
             this.buildings.populateBuildings();
             this.community.drawJobDiv();
+            this.drawAllTooltips();
             $( '.mouseTooltip' ).css("display", "none")
         }
     }
@@ -206,7 +205,6 @@ class OtterGame {
         this.modResourcesAndBuildings();
         this.buildings.rebuildAllCosts();
         if(this.settings != null) {
-            this.settings.generateTooltips();
             this.settings.updateNames();
         }
         this.drawAllTooltips();

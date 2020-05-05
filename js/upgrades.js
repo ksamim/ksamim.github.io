@@ -209,7 +209,7 @@ class Upgrades {
                 , 'modify': {
                     'buffs': {
                         'playBuff': {
-                            'modify,resources,joy,g_mult,1': ['add',1]
+                            'modify,resources,joy,g_mult,1': ['set',3]
                         }
                     }
                 }
@@ -541,13 +541,16 @@ class Upgrades {
                 , 'modify': {
                     'resources': {
                         'food': {
-                            't': 'Direct Aquafarmers'
+                            't': 'Direct Aquafarmers',
+                            'description': 'Oversee the Aquafarmers to improve their yields.'
                         },
                         'wood': {
-                            't': 'Direct Loggers'
+                            't': 'Direct Loggers',
+                            'description': 'Oversee the Loggers to drag more wood from the river.'
                         },
                         'stone': {
-                            't': 'Direct Miners'
+                            't': 'Direct Miners',
+                            'description': 'Oversee the Miners to spot better rocks.'
                         }
                     }
                 }
