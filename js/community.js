@@ -258,6 +258,8 @@ class Community {
         }
         if(filler) {
             divPage += "</div>"
+        }
+        if(divPage != '') {
             divPages = divPages.concat([divPage])
         }
         var drawDiv = ''
@@ -276,6 +278,8 @@ class Community {
             menu += "<span class='pMenu' id='next'>></span></div>"
             drawDiv += menu + pages
         } else {
+            console.log('drawing single page')
+            console.log(divPages)
             drawDiv = divPages[0]
         }
         $( '#nameList' ).html(drawDiv)
@@ -285,7 +289,7 @@ class Community {
     }
 
     setOtterPaginate() {
-        if($( '.otterPaginateMenu').length > 0) {
+        if($( '.otterPaginateMenu .pMenu').length > 0) {
             var t = this;
             $( ".pMenu" ).prop("onclick", null).off("click");
             $( ".pMenu" ).click(function() {
