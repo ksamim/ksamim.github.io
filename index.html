@@ -1,0 +1,263 @@
+<html>
+    <head>
+        <title>Otter Life</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="js/lz-string.min.js"></script>
+        <script src="js/break_infinity.js"></script>
+        <script src="js/otterNames.js"></script>
+        <script src="js/functions.js"></script>
+        <script src="js/otter.js"></script>
+        <script src="js/resources.js"></script>
+        <script src="js/buildings.js"></script>
+        <script src="js/upgrades.js"></script>
+        <script src="js/buffs.js"></script>
+        <script src="js/community.js"></script>
+        <script src="js/settings.js"></script>
+        <script src="js/game.js"></script>
+    </head>
+    <body>
+        <div class='mouseTooltip'></div>
+        <div class='title_options'>
+            <div class='logo'>Otter Life</div>
+            <div class='options'>
+                <div class='version'></div>
+                <span class='fancylink saveIt'>Save</span> | <span class='fancylink loadIt'>Load</span> 
+                | <span class='fancylink optToggle'>Options</span> | <span class='fancylink wipe'>Wipe</span>
+            </div>
+        </div>
+        <div class='viewport'>
+            <div class='statscol'>
+                <div class='stats'>
+                    <div class='blocktitle'>Otters</div>
+                    <div class='community' id='commType'><i>You're all alone!</i></div>
+                    <div class='res' id='popRes'>
+                        <div class='bg'></div>
+                        <div class='resWrapper'>
+                            <div class='resTitle'>Population</div>
+                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span></div>
+                        </div>
+                    </div>
+                    <div class='res' id='joyRes'>
+                        <div class='bg'></div>
+                        <div class='resWrapper'>
+                            <div class='resTitle'>Joy</div>
+                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span> <div class='joyPPS' id='joyPPS'><span class='pps'></span></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class='buffs'>
+                    <div class='blocktitle'>Mood</div>
+                    <div id="buffArea"></div>
+                </div>
+                <div class='resources'>
+                    <div class='blocktitle'>Resources</div>
+                    <div class='res' id='foodRes'>
+                        <div class='bg'></div>
+                        <div class='resWrapper'>
+                            <div class='resTitle'>Food</div>
+                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span> <span class='pps'></span></div>
+                        </div>
+                    </div>
+                    <div class='res' id='woodRes'>
+                        <div class='resWrapper'>
+                            <div class='resTitle'>Wood</div>
+                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span> <span class='pps'></span></div>
+                        </div>
+                        <div class='bg'></div>
+                    </div>
+                    <div class='res' id='stoneRes'>
+                        <div class='resWrapper'>
+                            <div class='resTitle'>Stone</div>
+                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span> <span class='pps'></span></div>
+                        </div>
+                        <div class='bg'></div>
+                    </div>
+                </div>
+            </div>
+            <div class='viewcol'>
+                <div class='menu'>
+                    <div class='menuBtn' id='actBtn'>
+                        <span class='menuitem'>Build</span>
+                    </div>
+                    <div class='menuBtn' id='upgBtn'>
+                        <span class='menuitem'>Upgrades</span>
+                    </div>
+                    <div class='menuBtn popTabMenu' id='popBtn'>
+                        <span class='menuitem'>Community</span>
+                    </div>
+                </div>
+                <div class='view'>
+                    <div id='defaultView' class='defaultView'>
+                        Loading!
+                    </div>
+                    <div id='tutorialView' class='subView'>
+                        <div class='blocktitle'>Welcome to <span class='special'>Otter Life</span></div>
+                    </div>
+                    <div id='actView' class='subView'>
+                        <div class='blocktitle'>Gathering</div>
+                        <div class='actRow'>
+                            <div class='actCol'>
+                                <div class='actCell'>
+                                    <div class='action pro' id='mkFood'>
+                                        <span class='actionItem'><span class='name'></span></span>
+                                    </div>
+                                </div>
+                                <div class='actCell'>
+                                    <div class='action pro' id='mkWood'>
+                                        <span class='actionItem'><span class='name'></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='actCol'>
+                                <div class='actCell'>
+                                    <div class='action pro' id='mkStone'>
+                                        <span class='actionItem'><span class='name'></span></span>
+                                    </div>
+                                </div>
+                                <div class='actCell'>
+                                    <div class='action pro' id='mkJoy'>
+                                        <span class='actionItem'><span class='name'></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='blocktitle'>Buildings</div>
+                        <div id='buildingsDiv'></div>
+                    </div>
+                    <div id='upgView' class='subView'>
+                        <div class='upgradeBlock'>
+                            <div class='hideCompleted'>
+                                <span class='fancylink hideUpgrades'>Hide Completed</span>
+                            </div>
+                            <div class='blocktitle'>Upgrades</div>
+                        </div>
+                        <div id='availableUpgrades'></div>
+                        <div id='complDiv'>
+                            <div class='blocktitle'>Completed</div>
+                            <div id='completedUpgrades'></div>
+                        </div>
+                    </div>
+                    <div id='popView' class='subView'>
+                        <div class='blocktitle'>Community</div>
+                        <div id='communityTabContents'></div>
+                        <div class='nameListings'>
+                            <div class='blocktitle'>You & Your Pals</div>
+                            <div class='otterOptions'>
+                                <div class='otterOptionTabs'>
+                                    <div class='otterOptionTab' id='reassign'>Reassign</div>
+                                    <div class='otterOptionTab dis' id='setManager'>Managers</div>
+                                    <!-- <div class='otterOptionTab dis' id='sort'>Sort</div> -->
+                                    <div class='clearOption' id='clearOtterOption'>Clear</div>
+                                </div>
+                                <div class='otterOptionSettings'>
+                                    <div class='otterSetting' id='reassignView'>
+                                        <div class='reassignButton otterActionButton' id='rNoJob'>P</div>
+                                        <div class='reassignButton otterActionButton' id='rFoodJob'>A</div>
+                                        <div class='reassignButton otterActionButton' id='rWoodJob'>L</div>
+                                        <div class='reassignButton otterActionButton' id='rStoneJob'>M</div>
+                                    </div>
+                                    <div class='otterSetting' id='setManagerView'>
+                                        <div class='managerButton otterActionButton' id='mFoodJob'>A</div>
+                                        <div class='managerButton otterActionButton' id='mWoodJob'>L</div>
+                                        <div class='managerButton otterActionButton' id='mStoneJob'>M</div>
+                                    </div>
+                                    <div class='otterSetting' id='sortView'>
+                                        sortView
+                                    </div>
+                                </div>
+                            </div>
+                            <div id='nameList'></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="optionView popup">
+            <div class="top">
+                <div class='blocktitle'>Options</div>
+                <div class='close optToggle'>
+                    <span>X</span>
+                </div>
+            </div>
+            <div class='optionViewEntry'>
+                <div class='fTitle'>Name</div>
+                <div class='nameBoxWrapper'>
+                    <div class='setName' id='setName'>
+                        <span class='fancylink'>Set</span>
+                    </div>
+                    <div class='nameBox'><input type='text' id='nameBox' placeholder=""></div>
+                </div>
+            </div>
+            <div class='optionViewEntry'>
+                <div class='fTitle'>Import/Export</div>
+                <div class='nameBoxWrapper'>
+                    <div class='ieOptions' id='ieOptions'>
+                        <span class='fancylink importView'>Import</span>
+                        <span class='fancylink exportView'>Export to Text</span>
+                        <span class='fancylink exportFile'>Export to File</span>
+                    </div>
+                    <div class='ieTextBox' id='ieTextBox'>
+                        <div id='importText' class='ieBox'>
+                            <div class='importButton' id='importButton'>
+                                <span class='fancylink'>Import!</span>
+                            </div>
+                            <div class='ieBoxWrapper'><textarea id='importTextBox' rows='3' cols='50'></textarea></div>
+                        </div>
+                        <div id='exportText' class='ieBox'>
+                            <div class='exportButton' id='exportButton'>
+                                <span class='fancylink'>Copy</span>
+                            </div>
+                            <div class='ieBoxWrapper'><textarea id='exportTextBox' rows='3' cols='50'></textarea></div>
+                        </div>
+                        <div id='emptyText' class='ieBox'>
+                            <div class='exportFileButton' id='exportFileButton'>
+                                <span class='fancylink'><a href='#'>Download</a></span>
+                            </div>
+                            <div class='nameBox'><input type='text' id='fileName' value='otterlife_savegame'></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='autosave optionViewEntry'>
+                <div class='fTitle'>Autosave (<span class='asSetting'></span>)
+                    <div class='toggleAutosave on'>On</div>
+                </div>
+                <div class="slidecontainer">
+                    30s <input type="range" min="30" max="120" value="60" class="slider" id="autosaveRange"> 120s
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="confirm loadConfirm popup">
+            Are you sure you want to load your save?
+            <div class="confirmWindow">
+                <div class='confYes'>Yes</div>
+                <div class='confNo'>No</div>
+            </div>
+        </div>
+        <div class="confirm wipeConfirm popup">
+            Are you sure you want to wipe your save? This can't be undone.
+            <div class="confirmWindow">
+                <div class='confYes'>Yes</div>
+                <div class='confNo'>No</div>
+            </div>
+        </div>
+        <div class="confirm importConfirm popup">
+            Are you sure you want to import this save?<br/><br/>Corrupted save data can wipe everything irrevocably. Consider exporting your current save just in case.
+            <div class="confirmWindow">
+                <div class='confYes'>Yes</div>
+                <div class='confNo'>No</div>
+            </div>
+        </div>
+        <div class="offlineEarnings popup">
+            <div class='blocktitle'>Welcome back!</div>
+            <div class='earningsTime'>You have been offline for <span></span>.<br/>
+            While you were offline, you generated:</div>
+            <div class='earnings'></div>
+            <div class='fancylink'>Go Play!</div>
+        </div>
+    </body>
+</html>
