@@ -1,51 +1,47 @@
 <html>
     <head>
         <title>Otter Life</title>
+        <link rel="icon" 
+              type="image/png" 
+              href="./favicon.ico">
         <link rel="stylesheet" type="text/css" href="css/main.css">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37090257-2"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-37090257-2');
+        </script> -->
+        <script type="text/javascript" src="https://rawcdn.githack.com/chrisveness/crypto/7067ee62f18c76dd4a9d372a00e647205460b62b/sha1.js"></script>
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://kit.fontawesome.com/a502d4e587.js" crossorigin="anonymous"></script>
         <script src="js/lz-string.min.js"></script>
-        <script src="js/break_infinity.js"></script>
-        <script src="js/otterNames.js"></script>
-        <script src="js/functions.js"></script>
-        <script src="js/otter.js"></script>
-        <script src="js/resources.js"></script>
-        <script src="js/buildings.js"></script>
-        <script src="js/upgrades.js"></script>
-        <script src="js/buffs.js"></script>
-        <script src="js/community.js"></script>
-        <script src="js/settings.js"></script>
-        <script src="js/game.js"></script>
+        <script src='js/otterlife.min.js'></script>
+        <link href='https://fonts.googleapis.com/css?family=Alegreya' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet'>
     </head>
     <body>
         <div class='mouseTooltip'></div>
         <div class='title_options'>
-            <div class='logo'>Otter Life</div>
             <div class='options'>
-                <div class='version'></div>
+                <div class='vblock'>
+                    <div id='discord'><a href='https://discord.gg/DKrgaGx' target='_blank'><i class="fab fa-discord"></i></a></div>
+                    <span class='version' id='clogBtn'></span></div>
                 <span class='fancylink saveIt'>Save</span> | <span class='fancylink loadIt'>Load</span> 
-                | <span class='fancylink optToggle'>Options</span> | <span class='fancylink wipe'>Wipe</span>
+                <!-- | <span class='fancylink optToggle'>Options</span>  -->
+                | <span class='fancylink wipe'>Wipe</span>
             </div>
+            <div class='logo'><img src='./images/logo.png'/></div>
         </div>
         <div class='viewport'>
             <div class='statscol'>
                 <div class='stats'>
                     <div class='blocktitle'>Otters</div>
                     <div class='community' id='commType'><i>You're all alone!</i></div>
-                    <div class='res' id='popRes'>
-                        <div class='bg'></div>
-                        <div class='resWrapper'>
-                            <div class='resTitle'>Population</div>
-                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span></div>
-                        </div>
-                    </div>
-                    <div class='res' id='joyRes'>
-                        <div class='bg'></div>
-                        <div class='resWrapper'>
-                            <div class='resTitle'>Joy</div>
-                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span> <div class='joyPPS' id='joyPPS'><span class='pps'></span></div></div>
-                        </div>
-                    </div>
+                    <div id='resList'></div>
                 </div>
                 <div class='buffs'>
                     <div class='blocktitle'>Mood</div>
@@ -53,47 +49,59 @@
                 </div>
                 <div class='resources'>
                     <div class='blocktitle'>Resources</div>
-                    <div class='res' id='foodRes'>
-                        <div class='bg'></div>
-                        <div class='resWrapper'>
-                            <div class='resTitle'>Food</div>
-                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span> <span class='pps'></span></div>
-                        </div>
-                    </div>
-                    <div class='res' id='woodRes'>
-                        <div class='resWrapper'>
-                            <div class='resTitle'>Wood</div>
-                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span> <span class='pps'></span></div>
-                        </div>
-                        <div class='bg'></div>
-                    </div>
-                    <div class='res' id='stoneRes'>
-                        <div class='resWrapper'>
-                            <div class='resTitle'>Stone</div>
-                            <div class='resVal'><span class='cur'>0</span>/<span class='max'>0</span> <span class='pps'></span></div>
-                        </div>
-                        <div class='bg'></div>
-                    </div>
+                    <div id='resList'></div>
                 </div>
             </div>
             <div class='viewcol'>
                 <div class='menu'>
+                    <!--   TOP MENU   -->
                     <div class='menuBtn' id='actBtn'>
-                        <span class='menuitem'>Build</span>
+                        <div class='menuitem'><i class="fas fa-tools fa-2x"></i></div>
                     </div>
                     <div class='menuBtn' id='upgBtn'>
-                        <span class='menuitem'>Upgrades</span>
+                        <div class='menuitem'><i class="far fa-arrow-alt-circle-up fa-2x"></i></div>
                     </div>
                     <div class='menuBtn popTabMenu' id='popBtn'>
-                        <span class='menuitem'>Community</span>
+                        <div class='menuitem'><i class="fas fa-home fa-2x"></i></div>
                     </div>
+                    <div class = 'menuBtn' id='craftBtn'>
+                        <div class='menuitem'><i class="fas fa-drafting-compass fa-2x"></i></div>
+                    </div>
+                    <div class='pushRight'>
+                        <div class='menuBtn' id='giftBtn'>
+                            <div class='menuitem'><i class="fas fa-gift fa-2x"></i></div>
+                        </div>
+                    </div>
+                    <!-- END TOP MENU -->
                 </div>
                 <div class='view'>
                     <div id='defaultView' class='defaultView'>
-                        Loading!
+                        <div class='dViewCenter'>Loading!</div>
                     </div>
                     <div id='tutorialView' class='subView'>
-                        <div class='blocktitle'>Welcome to <span class='special'>Otter Life</span></div>
+                        <div class='blocktitle'>Welcome to <span class='special'>Otter Life!</span></div>
+                        <div class='chPara'>Otter Life is an incremental, evolving game. Basics are revealed quickly, but new mechanics will slowly emerge.
+                            Your goal is to seek happiness, measured by
+                        <span style='color:#e6e'>Joy</span>, earned by playing around and collecting food.</div>
+                        <div class='chPara'>As you become more joyful, you will learn new things, allowing you
+                            to collect more resources, meet new friends, build more buildings, and much more. While you have spent most of your life on your safe riverbed, the journey
+                            for more <span style='color:#e6e'>Joy</span> will lead to discoveries not just about yourself, but also about the wide world you live in...
+                        </div>
+                        <div class='chPara'>Before we begin, what is your inner Otter's name?</div>
+                        <div class='optionViewEntry'>
+                            <div class='fTitle'>Name</div>
+                            <div class='nameBoxWrapper'>
+                                <div class='setNameTut'>
+                                    <div id='setNameTut'>
+                                        <span class='fancylink'>Set</span>
+                                    </div>
+                                </div>
+                                <div class='nameBoxTut'><input type='text' id='nameBoxTut' placeholder=""></div>
+                            </div>
+                        </div>
+                        <div class='chPara'>With that out of the way, let's go play!</div>
+                        <div class='fancylink' id='startGame'>Go Play!</div>
+                        <div class='chPara footnote'><span>Otter Life is dedicated to my beautiful wife, Ellie, and our son, Benji.</span></div>
                     </div>
                     <div id='actView' class='subView'>
                         <div class='blocktitle'>Gathering</div>
@@ -123,7 +131,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class='blocktitle'>Buildings</div>
+                        <div class='blocktitle bldgSec'>Buildings</div>
                         <div id='buildingsDiv'></div>
                     </div>
                     <div id='upgView' class='subView'>
@@ -141,6 +149,7 @@
                     </div>
                     <div id='popView' class='subView'>
                         <div class='blocktitle'>Community</div>
+                        <div class='communityMultiSlider'></div>
                         <div id='communityTabContents'></div>
                         <div class='nameListings'>
                             <div class='blocktitle'>You & Your Pals</div>
@@ -148,7 +157,6 @@
                                 <div class='otterOptionTabs'>
                                     <div class='otterOptionTab' id='reassign'>Reassign</div>
                                     <div class='otterOptionTab dis' id='setManager'>Managers</div>
-                                    <!-- <div class='otterOptionTab dis' id='sort'>Sort</div> -->
                                     <div class='clearOption' id='clearOtterOption'>Clear</div>
                                 </div>
                                 <div class='otterOptionSettings'>
@@ -157,6 +165,7 @@
                                         <div class='reassignButton otterActionButton' id='rFoodJob'>A</div>
                                         <div class='reassignButton otterActionButton' id='rWoodJob'>L</div>
                                         <div class='reassignButton otterActionButton' id='rStoneJob'>M</div>
+                                        <div class='reassignButton otterActionButton' id='rMakeJob'>R</div>
                                     </div>
                                     <div class='otterSetting' id='setManagerView'>
                                         <div class='managerButton otterActionButton' id='mFoodJob'>A</div>
@@ -171,65 +180,156 @@
                             <div id='nameList'></div>
                         </div>
                     </div>
+                    <div class="subView" id='optView'>
+                        <div class="top">
+                            <div class='blocktitle'>Options</div>
+                        </div>
+                        <div class='optionViewEntry'>
+                            <div class='fTitle'>Name</div>
+                            <div class='nameBoxWrapper'>
+                                <div class='setName' id='setName'>
+                                    <span class='fancylink'>Set</span>
+                                </div>
+                                <div class='nameBox'><input type='text' id='nameBox' placeholder=""></div>
+                            </div>
+                        </div>
+                        <div class='autosave optionViewEntry'>
+                            <div class='fTitle'>Autosave (<span class='asSetting'></span>)
+                                <div class='toggleAutosave on'>On</div>
+                            </div>
+                            <div class="slidecontainer">
+                                30s <input type="range" min="0" max="5" value="60" class="slider" id="autosaveRange"> 120s
+                            </div>
+                        </div>
+                        <div class='uiconfig optionViewEntry'>
+                            <div class='fTitle'>User Interface
+                            </div>
+                            <div class="actRow">
+                                <div class="actCol">
+                                    <div class='actCell uiOpts'>
+                                        Font
+                                        <div class='custom-select'>
+                                            <select id="optFont">
+                                                <option value="Cambria" class='fCambria'>Cambria</option>
+                                                <option value="Vollkorn" class='fVollkorn'>Vollkorn</option>
+                                                <option value="Alegreya" class='fAlegreya'>Alegreya</option>
+                                                <option value="Times New Roman" class='fTimes'>Times New Roman</option>
+                                                <option value="Arial" class='fArial'>Arial</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='actCell uiOpts'>
+                                        Background
+                                        <div class='custom-select'>
+                                            <select id="optBG">
+                                                <option value="otters1">Floating Otters</option>
+                                                <option value="otters2">Otter Reef</option>
+                                                <option value="otters3">Otter Hearts</option>
+                                                <option value="otters4">River Otters</option>
+                                                <option value="#aaa">Light Grey</option>
+                                                <option value="#777">Grey</option>
+                                                <option value="#555">Dark Grey</option>
+                                                <option value="#757">Purplish</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='actCell uiOpts'>
+                                        Cell Background
+                                        <div class='custom-select'>
+                                            <select id="optCell">
+                                                <option value="#113">Blue</option>
+                                                <option value="#213">Purple</option>
+                                                <option value="#311">Red</option>
+                                                <option value="#131">Green</option>
+                                                <option value="#331">Yellow</option>
+                                                <option value="#133">Turquoise</option>
+                                                <option value="#333">Grey</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='optionViewEntry'>
+                            <div class='fTitle'>Import/Export</div>
+                            <div class='nameBoxWrapper'>
+                                <div class='ieOptions' id='ieOptions'>
+                                    <span class='fancylink importView'>Import</span>
+                                    <span class='fancylink exportView'>Export to Text</span>
+                                    <span class='fancylink exportFile'>Export to File</span>
+                                </div>
+                                <div class='ieTextBox' id='ieTextBox'>
+                                    <div id='importText' class='ieBox'>
+                                        <div class='ieBoxWrapper'><textarea id='importTextBox' rows='3' cols='50'></textarea></div>
+                                        <div class='importButton' id='importButton'>
+                                            <span class='fancylink'>Import!</span>
+                                        </div>
+                                    </div>
+                                    <div id='exportText' class='ieBox'>
+                                        <div class='ieBoxWrapper'><textarea id='exportTextBox' rows='3' cols='50'></textarea></div>
+                                        <div class='exportButton' id='exportButton'>
+                                            <span class='fancylink'>Copy</span>
+                                        </div>
+                                    </div>
+                                    <div id='emptyText' class='ieBox'>
+                                        <div class='nameBox'><input type='text' id='fileName' value='otterlife_savegame'></div>
+                                        <div class='exportFileButton' id='exportFileButton'>
+                                            <span class='fancylink'><a href='#'>Download</a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id='giftView' class='subView'>
+                        <div class='blocktitle'>Karma</div><br/>
+                        <div class="karmaContainer">
+                            <div class="karmaMenu">
+                                <div class="kmTab active first" id="giveBtn">Give</div>
+                                <div class="kmTab" id="kismetBtn">Kismet</div>
+                            </div>
+                            <div class="karmaView">
+                                <div class="kmView active" id="giveView"></div>
+                                <div class="kmView" id="kismetView"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id='craftView' class='subView'>
+                        <div class='blocktitle'>Crafting</div>
+                        <div class="craftContainer"></div>
+                    </div>
+                    <div id='storyView' class='subView'></div>
+                    <div id='helpView' class='subView'>
+                        <div class='blocktitle'>Guidance</div>
+                    </div>
+                    <div id='clogView' class='subView'></div>
+                </div>
+            </div>
+            <div class='eventscol'>
+                <div class='eventslog'>
+                    <div class='eventsmenu'>
+                        <div class='menuBtn eventBtn' id='storyBtn'>
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class='menuBtn eventBtn' id='optBtn'>
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <!-- <div class='menuBtn eventBtn' id='helpBtn'>
+                            <i class="fas fa-question"></i>
+                        </div> -->
+                    </div>
+                    <br/>
+                    <div class='blocktitle'>Log</div>
+                    <div class='logWrapper'>
+                        <div class='log'>
+                            <div class='noteComplete'>You have completed the content for this patch!</div>
+                            <div class='logcontents'><div class='logstory'>You're a little otter playing on the riverbank...</div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <br/>
-        <div class="optionView popup">
-            <div class="top">
-                <div class='blocktitle'>Options</div>
-                <div class='close optToggle'>
-                    <span>X</span>
-                </div>
-            </div>
-            <div class='optionViewEntry'>
-                <div class='fTitle'>Name</div>
-                <div class='nameBoxWrapper'>
-                    <div class='setName' id='setName'>
-                        <span class='fancylink'>Set</span>
-                    </div>
-                    <div class='nameBox'><input type='text' id='nameBox' placeholder=""></div>
-                </div>
-            </div>
-            <div class='optionViewEntry'>
-                <div class='fTitle'>Import/Export</div>
-                <div class='nameBoxWrapper'>
-                    <div class='ieOptions' id='ieOptions'>
-                        <span class='fancylink importView'>Import</span>
-                        <span class='fancylink exportView'>Export to Text</span>
-                        <span class='fancylink exportFile'>Export to File</span>
-                    </div>
-                    <div class='ieTextBox' id='ieTextBox'>
-                        <div id='importText' class='ieBox'>
-                            <div class='importButton' id='importButton'>
-                                <span class='fancylink'>Import!</span>
-                            </div>
-                            <div class='ieBoxWrapper'><textarea id='importTextBox' rows='3' cols='50'></textarea></div>
-                        </div>
-                        <div id='exportText' class='ieBox'>
-                            <div class='exportButton' id='exportButton'>
-                                <span class='fancylink'>Copy</span>
-                            </div>
-                            <div class='ieBoxWrapper'><textarea id='exportTextBox' rows='3' cols='50'></textarea></div>
-                        </div>
-                        <div id='emptyText' class='ieBox'>
-                            <div class='exportFileButton' id='exportFileButton'>
-                                <span class='fancylink'><a href='#'>Download</a></span>
-                            </div>
-                            <div class='nameBox'><input type='text' id='fileName' value='otterlife_savegame'></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class='autosave optionViewEntry'>
-                <div class='fTitle'>Autosave (<span class='asSetting'></span>)
-                    <div class='toggleAutosave on'>On</div>
-                </div>
-                <div class="slidecontainer">
-                    30s <input type="range" min="30" max="120" value="60" class="slider" id="autosaveRange"> 120s
-                </div>
-            </div>
-        </div>
         <br/>
         <div class="confirm loadConfirm popup">
             Are you sure you want to load your save?
@@ -258,6 +358,30 @@
             While you were offline, you generated:</div>
             <div class='earnings'></div>
             <div class='fancylink'>Go Play!</div>
+        </div>
+        <div class="newVersion popup">
+            <div class='blocktitle'>Welcome back!</div>
+            <div class='newDesc'>
+                Your old save has been migrated to a new version of Otter Life! How exciting!<br/><br/>
+                Here's a brief list of the things that have changed since you last played:
+            </div>
+            <hr/>
+            <div class='changeLog'></div>
+            <div class='fancylink'>Check It Out!</div>
+        </div>
+        <div class="gettingStarted popup">
+            <div class='blocktitle'>Some Quick Tips!</div>
+            <div class='chPara'>
+                Otter Life will be familiar to most players of idle, incremental, and evolving games. Nonetheless, here are some general tips to get you started!
+                <ol>
+                    <li>Click resources in the <i class='fas fa-tools'></i> tab to buy new buildings</li>
+                    <li>Unlock new upgrades in the <i class='far fa-arrow-alt-circle-up'></i> tab to become more powerful</li>
+                    <li>Change font, background, and other options in the <i class='fas fa-cogs'></i> micromenu</li>
+                    <li>A glowing tab means there's something to do there</li>
+                    <li>Check the <i class='fas fa-question'></i> micromenu for further questions!</li>
+                </ol>
+            </div>
+            <div class='fancylink'>Get Going!</div>
         </div>
     </body>
 </html>
