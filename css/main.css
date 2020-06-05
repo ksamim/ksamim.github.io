@@ -12,7 +12,7 @@ body {
     color: #fff;
 }
 
-#discord {
+#discord, #reddit {
     display: inline-block;
 }
 
@@ -38,13 +38,14 @@ body {
     text-align: center;
 }
 
-#discord i {
+#discord i, #reddit i{
     color: #fff;
-    font-size: 18px;
-    margin-right: 10px;
+    font-size: 25px;
+    margin-left: 10px;
+    vertical-align: center;
 }
 
-#discord i:hover {
+#discord i:hover, #reddit i:hover {
     color: #7289da;
 }
 
@@ -72,14 +73,18 @@ body {
     height: 80px;
 }
 
-.vblock {
-    position:relative;
-    bottom:1px;
-    font-size:14px;
+.vblock { 
+    position: absolute;
+    bottom: 15px;
+    font-size: 14px;
     width: 100%;
-    text-align:right;
-    margin-bottom: 10px;
-    color:#aaa;
+    text-align: right;
+    color: #aaa;
+    right: 15px;
+}
+
+#versionBox {
+    margin-top: 10px;
 }
 
 .version {
@@ -120,14 +125,13 @@ body {
 
 .options {
     position: absolute;
-    right:0;
-    padding:15px;
+    right: 0;
     color: #bbb;
-    height:80px;
-    top: 10;
+    height: 100%;
     width: 250px;
     text-align: right;
     cursor: default;
+    bottom: 1px;
 }
 
 .fancylink {
@@ -1828,15 +1832,15 @@ img.resIcon {
 .cBox.inactive {
     background-image: radial-gradient(circle, #666 0%, #666 50%, rgba(0,0,75) 60%, rgba(0,0,75) 100%); 
 }
-.cBox.inactive:hover {
+/* .cBox.inactive:hover {
     background-image: radial-gradient(circle, #080 0%, #080 50%, rgba(0,0,75) 60%, rgba(0,0,75) 100%); 
-}
+} */
 .cBox.active {
     background-image: radial-gradient(circle, #0a0 0%, #0a0 50%, rgba(0,0,75) 60%, rgba(0,0,75) 100%); 
 }
-.cBox.active:hover {
+/* .cBox.active:hover {
     background-image: radial-gradient(circle, #080 0%, #080 50%, rgba(0,0,75) 60%, rgba(0,0,75) 100%); 
-}
+} */
 
 .kmRes .bgIcon {
     display: -webkit-box;
