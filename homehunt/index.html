@@ -55,12 +55,11 @@
       </section>
     </main>
 
-    <dialog id="gate-dialog" class="gate-dialog" aria-labelledby="gate-title" aria-describedby="gate-description">
+    <dialog id="gate-dialog" class="gate-dialog" aria-labelledby="gate-title">
       <form id="gate-form" method="dialog">
         <div class="gate-symbol" aria-hidden="true">⌂</div>
         <p class="eyebrow">Private shared view</p>
         <h2 id="gate-title">Enter the household passphrase</h2>
-        <p id="gate-description">Word order, capitalization, and extra spaces do not matter. The passphrase is checked by the protected backend and is never included in this site.</p>
         <label>
           <span>Passphrase</span>
           <input id="passcode-input" type="password" autocomplete="current-password" minlength="12" maxlength="256" required />
