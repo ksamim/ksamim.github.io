@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'self'" />
+    <title>HomeHunt</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="deployment-config.js"></script>
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#results">Skip to homes</a>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="HomeHunt home">
+        <span class="brand-mark" aria-hidden="true">⌂</span>
+        <span><strong>HomeHunt</strong><small>Shared shortlist</small></span>
+      </a>
+      <div class="identity-actions">
+      <label class="identity-control">
+        <span>Viewing as</span>
+        <select id="identity-select" aria-label="Choose comment and mark attribution">
+          <option value="" selected>Locked</option>
+        </select>
+      </label>
+      <button id="lock-app" class="lock-button" type="button" hidden>Lock</button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="eyebrow">A calm place to compare</p>
+        <h1 id="hero-title">Find the home that fits.</h1>
+        <p>Facts retain their evidence state and source date. Personal marks stay separately attributed.</p>
+      </section>
+
+      <section class="filters" aria-labelledby="filter-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Narrow the field</p><h2 id="filter-title">Home filters</h2></div>
+          <button id="clear-filters" class="quiet-button" type="button">Clear</button>
+        </div>
+        <div id="filter-grid" class="filter-grid"></div>
+        <p class="boundary-note">School district and attendance-zone evidence are separate. A zone is never treated as verified from a listing claim alone.</p>
+      </section>
+
+      <section id="results" class="results" aria-labelledby="results-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Shortlist</p><h2 id="results-title">Homes</h2></div>
+          <span id="result-count" class="result-count" aria-live="polite"></span>
+        </div>
+        <div id="property-grid" class="property-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <dialog id="gate-dialog" class="gate-dialog" aria-labelledby="gate-title" aria-describedby="gate-description">
+      <form id="gate-form" method="dialog">
+        <div class="gate-symbol" aria-hidden="true">⌂</div>
+        <p class="eyebrow">Private shared view</p>
+        <h2 id="gate-title">Enter the household passphrase</h2>
+        <p id="gate-description">Word order, capitalization, and extra spaces do not matter. The passphrase is checked by the protected backend and is never included in this site.</p>
+        <label>
+          <span>Passphrase</span>
+          <input id="passcode-input" type="password" autocomplete="current-password" minlength="12" maxlength="256" required />
+        </label>
+        <p id="gate-error" class="form-error" role="alert"></p>
+        <button class="primary-button" type="submit">Open HomeHunt</button>
+        <p id="demo-note" class="demo-note" hidden>Local synthetic demo: any nonempty passphrase opens the fixture data.</p>
+      </form>
+    </dialog>
+
+    <template id="property-template">
+      <article class="property-card">
+        <header class="property-header">
+          <div><p class="status-pill"></p><h3></h3><p class="address-line"></p></div>
+          <a class="listing-link" target="_blank" rel="noopener noreferrer">Listing ↗</a>
+        </header>
+        <div class="fact-grid"></div>
+        <div class="rank-panel">
+          <h4>Preference match</h4>
+          <div class="rank-list"></div>
+        </div>
+        <div class="visits-panel">
+          <h4>Upcoming</h4>
+          <div class="visits-list"></div>
+        </div>
+        <div class="attribution-panel">
+          <h4>Separate views</h4>
+          <div class="mark-summary"></div>
+          <fieldset class="mark-fieldset">
+            <legend>Your mark</legend>
+            <div class="mark-actions">
+              <button type="button" data-stance="love">Love</button>
+              <button type="button" data-stance="maybe">Maybe</button>
+              <button type="button" data-stance="pass">Pass</button>
+              <button type="button" data-stance="veto" class="veto-button">Veto</button>
+            </div>
+          </fieldset>
+        </div>
+        <div class="comments-panel">
+          <h4>Comments</h4>
+          <div class="comments-list"></div>
+          <form class="comment-form">
+            <label><span class="sr-only">Add a comment</span><textarea rows="2" maxlength="1000" placeholder="Add an attributed note…" required></textarea></label>
+            <button type="submit">Post</button>
+          </form>
+        </div>
+        <div class="insights-panel">
+          <h4>Preference notes</h4>
+          <div class="insights-list"></div>
+        </div>
+      </article>
+    </template>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
