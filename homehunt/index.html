@@ -55,17 +55,18 @@
       </section>
     </main>
 
-    <dialog id="gate-dialog" class="gate-dialog" aria-labelledby="gate-title">
+    <dialog id="gate-dialog" class="gate-dialog" role="dialog" aria-labelledby="gate-title">
       <form id="gate-form" method="dialog">
         <div class="gate-symbol" aria-hidden="true">⌂</div>
         <p class="eyebrow">Private shared view</p>
         <h2 id="gate-title">Enter the household passphrase</h2>
         <label>
           <span>Passphrase</span>
-          <input id="passcode-input" type="password" autocomplete="current-password" minlength="12" maxlength="256" required />
+          <input id="passcode-input" type="password" autocomplete="current-password" maxlength="256" required />
         </label>
+        <p id="gate-status" class="gate-status" role="status" aria-live="polite"></p>
         <p id="gate-error" class="form-error" role="alert"></p>
-        <button class="primary-button" type="submit">Open HomeHunt</button>
+        <button id="gate-submit" class="primary-button" type="submit">Open HomeHunt</button>
         <p id="demo-note" class="demo-note" hidden>Local synthetic demo: any nonempty passphrase opens the fixture data.</p>
       </form>
     </dialog>

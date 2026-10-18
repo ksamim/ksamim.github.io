@@ -110,9 +110,9 @@ h2 { margin-bottom: 0; font-family: Georgia, serif; font-size: clamp(1.75rem, 4v
 .visit span { margin-top: .25rem; color: var(--muted); font-size: .74rem; line-height: 1.4; }
 .visit[data-status="cancelled"] { opacity: .65; text-decoration: line-through; }
 
-.gate-dialog { width: min(31rem, calc(100% - 2rem)); padding: 0; border: 0; border-radius: 1.4rem; background: var(--card); box-shadow: 0 25px 100px rgba(0,0,0,.28); }
+.gate-dialog { width: min(31rem, calc(100% - 2rem)); max-height: calc(100dvh - 1rem); padding: 0; border: 0; border-radius: 1.4rem; background: var(--card); box-shadow: 0 25px 100px rgba(0,0,0,.28); overflow: auto; }
 .gate-dialog::backdrop { background: rgba(18, 34, 28, .72); backdrop-filter: blur(7px); }
-.gate-dialog form { padding: clamp(1.4rem, 5vw, 2.3rem); }
+.gate-dialog form { padding: clamp(1.4rem, 5vw, 2.3rem) clamp(1.4rem, 5vw, 2.3rem) max(clamp(1.4rem, 5vw, 2.3rem), env(safe-area-inset-bottom)); }
 .gate-dialog h2 { margin-bottom: .7rem; }
 .gate-dialog p { color: var(--muted); line-height: 1.5; }
 .gate-symbol { display: grid; place-items: center; width: 3rem; height: 3rem; margin-bottom: 1rem; border-radius: 50%; background: var(--fern); color: white; font-size: 1.6rem; }
@@ -120,6 +120,11 @@ h2 { margin-bottom: 0; font-family: Georgia, serif; font-size: clamp(1.75rem, 4v
 .gate-dialog input { width: 100%; min-height: 48px; border: 1px solid var(--line); border-radius: .75rem; padding: .75rem; background: white; }
 .gate-dialog .primary-button { width: 100%; margin-top: .7rem; min-height: 48px; }
 .form-error { min-height: 1.3rem; margin: .45rem 0; color: #8e2d1f !important; font-size: .8rem; }
+.gate-status { min-height: 1.2rem; margin: .45rem 0 0; font-size: .76rem; }
+.gate-dialog[aria-busy="true"] .primary-button { opacity: .72; cursor: wait; }
+.empty-results { grid-column: 1 / -1; padding: 1rem; border: 1px dashed var(--line); border-radius: .9rem; background: rgba(255,255,255,.62); }
+.gate-dialog.is-fallback { position: fixed; inset: 50% auto auto 50%; z-index: 101; transform: translate(-50%, -50%); }
+body.gate-fallback-open::before { content: ""; position: fixed; inset: 0; z-index: 100; background: rgba(18, 34, 28, .72); }
 .demo-note { margin: .8rem 0 0; font-size: .74rem; }
 .toast { position: fixed; left: 50%; bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 50; transform: translateX(-50%); width: min(30rem, calc(100% - 2rem)); padding: .85rem 1rem; border-radius: .85rem; background: var(--ink); color: white; text-align: center; box-shadow: var(--shadow); }
 

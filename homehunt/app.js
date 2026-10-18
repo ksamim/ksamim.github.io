@@ -1,5 +1,6 @@
 import { selectBackend } from "./backend.js";
 import { FACT_FILTERS, FACT_LABELS, IDENTITIES, filterProperties, freshnessLabel, rankProperties, safeHttpUrl, scorePreferenceMatch, stanceLabel } from "./model.js";
+import { readJsonStorage, readStorage, removeStorage, resultEmptyMessage, writeStorage } from "./ui-state.js";
 
 const identityKey = "homehunt-selected-identity-v1";
 const sessionKey = "homehunt-session-v1";
@@ -14,6 +15,8 @@ const elements = {
   gateForm: document.querySelector("#gate-form"),
   passcode: document.querySelector("#passcode-input"),
   gateError: document.querySelector("#gate-error"),
+  gateStatus: document.querySelector("#gate-status"),
+  gateSubmit: document.querySelector("#gate-submit"),
   demoNote: document.querySelector("#demo-note"),
   template: document.querySelector("#property-template"),
   toast: document.querySelector("#toast"),
@@ -22,12 +25,7 @@ const elements = {
 
 let backend;
 let expiryTimer;
-let sessionRecord;
-try {
-  sessionRecord = JSON.parse(sessionStorage.getItem(sessionKey));
-} catch {
-  sessionRecord = null;
-}
+let sessionRecord = readJsonStorage(() => window.sessionStorage, sessionKey);
 let snapshot = { properties: [] };
 let filters = Object.fromEntries(FACT_FILTERS.map(({ key }) => [key, "any"]));
 
@@ -62,10 +60,39 @@ function renderIdentitySelector() {
   elements.identity.innerHTML = people.map((person) =>
     `<option value="${escapeHtml(person.id)}">${escapeHtml(person.label)}</option>`
   ).join("");
-  const saved = localStorage.getItem(identityKey);
+  const saved = readStorage(() => window.localStorage, identityKey);
   elements.identity.value = people.some((person) => person.id === saved)
     ? saved
     : snapshot.defaultIdentityKey || people[0]?.id || "";
+}
+
+function showGate() {
+  document.body.classList.add("gate-open");
+  if (typeof elements.gate.showModal === "function") {
+    if (!elements.gate.open) elements.gate.showModal();
+  } else {
+    document.body.classList.add("gate-fallback-open");
+    elements.gate.classList.add("is-fallback");
+    elements.gate.setAttribute("open", "");
+    elements.gate.setAttribute("aria-modal", "true");
+  }
+}
+
+function closeGate() {
+  document.body.classList.remove("gate-open", "gate-fallback-open");
+  if (typeof elements.gate.close === "function") {
+    if (elements.gate.open) elements.gate.close();
+  } else {
+    elements.gate.removeAttribute("open");
+  }
+}
+
+function setGateBusy(busy) {
+  elements.gate.setAttribute("aria-busy", String(busy));
+  elements.gateSubmit.disabled = busy;
+  elements.passcode.readOnly = busy;
+  elements.gateSubmit.textContent = busy ? "Opening…" : "Open HomeHunt";
+  elements.gateStatus.textContent = busy ? "Connecting to the private workspace…" : "";
 }
 
 function toast(message) {
@@ -242,7 +269,7 @@ function renderProperties() {
   elements.count.textContent = `${properties.length} ${properties.length === 1 ? "home" : "homes"}`;
   elements.grid.innerHTML = "";
   if (!properties.length) {
-    elements.grid.innerHTML = '<p class="empty-note">No homes match every selected evidence filter.</p>';
+    elements.grid.innerHTML = `<p class="empty-note empty-results">${escapeHtml(resultEmptyMessage(snapshot.properties?.length || 0))}</p>`;
     return;
   }
   properties.forEach((property) => {
@@ -297,7 +324,7 @@ function restoreFocus(target) {
 
 function lockApp(message = "HomeHunt is locked.") {
   window.clearTimeout(expiryTimer);
-  sessionStorage.removeItem(sessionKey);
+  removeStorage(() => window.sessionStorage, sessionKey);
   sessionRecord = null;
   snapshot = { properties: [], identities: IDENTITIES };
   elements.grid.replaceChildren();
@@ -305,7 +332,8 @@ function lockApp(message = "HomeHunt is locked.") {
   elements.identity.innerHTML = '<option value="">Locked</option>';
   elements.lock.hidden = true;
   elements.gateError.textContent = message;
-  if (!elements.gate.open) elements.gate.showModal();
+  setGateBusy(false);
+  showGate();
   elements.passcode.focus();
 }
 
@@ -335,7 +363,11 @@ function handleError(error) {
 
 async function refresh(focusTarget = null) {
   try {
-    snapshot = await backend.getSnapshot(sessionProof());
+    const nextSnapshot = await backend.getSnapshot(sessionProof());
+    if (!nextSnapshot || !Array.isArray(nextSnapshot.properties)) {
+      throw new Error("The private workspace returned an invalid home list.");
+    }
+    snapshot = nextSnapshot;
     renderIdentitySelector();
     elements.lock.hidden = false;
     renderProperties();
@@ -349,16 +381,17 @@ async function refresh(focusTarget = null) {
 async function unlock(passcode) {
   sessionRecord = await backend.openSession(passcode);
   if (!sessionRecord?.token || !sessionRecord?.expiresAt) throw new Error("The protected HomeHunt service returned an invalid session.");
-  sessionStorage.setItem(sessionKey, JSON.stringify(sessionRecord));
+  const persisted = writeStorage(() => window.sessionStorage, sessionKey, JSON.stringify(sessionRecord));
   if (!armSessionExpiry()) return;
   await refresh();
-  elements.gate.close();
+  closeGate();
+  if (!persisted) toast("Opened. Private browsing may ask for the passphrase again after a refresh.");
 }
 
 async function initialize() {
   renderFilters();
   elements.identity.addEventListener("change", () => {
-    localStorage.setItem(identityKey, identity());
+    writeStorage(() => window.localStorage, identityKey, identity());
     renderProperties();
   });
   elements.filters.addEventListener("change", (event) => {
@@ -390,18 +423,21 @@ async function initialize() {
     elements.passcode.disabled = true;
     elements.gateForm.querySelector("button").disabled = true;
   }
-  elements.gate.showModal();
+  showGate();
   elements.passcode.focus();
 }
 
 elements.gateForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   elements.gateError.textContent = "";
+  setGateBusy(true);
   try {
     await unlock(elements.passcode.value);
     elements.passcode.value = "";
   } catch (error) {
     elements.gateError.textContent = error.message;
+  } finally {
+    setGateBusy(false);
   }
 });
 
